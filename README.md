@@ -40,12 +40,11 @@
 - **시드니** (AEST, KST +2시간) - ASX
 - **오클랜드** (NZST, KST +4시간) - NZX
 
+---
 
 ### Github Pages접속 URL
 
 배포 완료 후: 'https://answndud.github.io/WorldTimeDashboard/'
-
-## 📁 파일 구조
 
 
 ## 🎨 특징
