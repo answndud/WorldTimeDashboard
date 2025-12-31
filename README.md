@@ -1,0 +1,98 @@
+# 🌍 World Time - 세계 시간
+
+한국에 거주하는 사람을 위한 세계 주요 도시 시간 대시보드입니다.
+
+## ✨ 기능
+
+- 🕐 **실시간 시간 표시**: 18개 주요 도시의 현재 시간을 실시간으로 표시
+- 📊 **한국과의 시차**: 각 도시별 KST 기준 시차 표시
+- 📈 **증시 상태**: 뉴욕(NYSE/NASDAQ), 런던(LSE) 등 주요 증시 개장/폐장 상태
+- 🌅 **낮/밤 표시**: 각 도시의 현재 시간대 (새벽/낮/저녁/밤)
+- 🌓 **라이트/다크 모드**: 원클릭으로 테마 변경 (설정 자동 저장)
+- ☀️ **서머타임(DST) 자동 적용**: 미국, 유럽, 호주 등의 DST가 자동 반영
+- 📱 **반응형 디자인**: 모바일, 태블릿, 데스크톱 모두 지원
+
+## 🌐 지원 도시
+
+### 🌎 미주 (Americas)
+- **뉴욕** (동부시간, KST -14시간) - NYSE/NASDAQ
+- **로스앤젤레스** (태평양시간, KST -17시간)
+- **댈러스/텍사스** (중부시간, KST -15시간)
+- **토론토** (동부시간, KST -14시간) - TSX
+- **상파울루** (브라질시간, KST -12시간) - B3
+
+### 🇪🇺 유럽 (Europe)
+- **런던** (GMT/BST, KST -9시간) - LSE, 프리미어리그
+- **파리** (CET, KST -8시간) - Euronext Paris, 리그1
+- **프랑크푸르트** (CET, KST -8시간) - Xetra/DAX, 분데스리가
+- **마드리드** (CET, KST -8시간) - BME, 라리가
+- **밀라노** (CET, KST -8시간) - Borsa Italiana, 세리에A
+
+### 🌏 아시아 & 중동 (Asia & Middle East)
+- **도쿄** (JST, KST 동일) - TSE
+- **베이징** (CST, KST -1시간) - SSE
+- **홍콩** (HKT, KST -1시간) - HKEX
+- **싱가포르** (SGT, KST -1시간) - SGX
+- **뭄바이** (IST, KST -3.5시간) - BSE/NSE
+- **두바이** (GST, KST -5시간) - DFM
+
+### 🌊 오세아니아 (Oceania)
+- **시드니** (AEST, KST +2시간) - ASX
+- **오클랜드** (NZST, KST +4시간) - NZX
+
+## 🚀 GitHub Pages 배포 방법
+
+### 방법 1: GitHub UI 사용
+
+1. GitHub에 새 저장소 생성 (예: `world-time`)
+2. 이 폴더의 파일들을 저장소에 업로드
+3. **Settings** → **Pages** 이동
+4. Source를 **Deploy from a branch** 선택
+5. Branch를 **main** (또는 master), 폴더를 **/ (root)** 선택
+6. Save 클릭
+
+### 방법 2: Git 명령어 사용
+
+```bash
+# 저장소 초기화
+git init
+git add .
+git commit -m "Initial commit: World Time Dashboard"
+
+# GitHub 저장소 연결 (username을 본인 계정으로 변경)
+git remote add origin https://github.com/USERNAME/world-time.git
+git branch -M main
+git push -u origin main
+```
+
+그 후 GitHub Settings에서 Pages 활성화
+
+### 접속 URL
+
+배포 완료 후: `https://USERNAME.github.io/world-time/`
+
+## 📁 파일 구조
+
+```
+World-Time/
+├── index.html    # 메인 페이지 (HTML + CSS + JavaScript 통합)
+└── README.md     # 이 파일
+```
+
+## 🎨 특징
+
+- 정적 HTML 파일 하나로 구성 (서버 불필요)
+- 외부 라이브러리 없이 순수 JavaScript 사용
+- 다크 테마 기반의 모던한 UI
+- 1초마다 자동 업데이트
+
+## 📋 용도
+
+- 🇺🇸 **미국 주식 투자**: NYSE, NASDAQ 개장 시간 확인
+- ⚽ **해외 스포츠 시청**: 프리미어리그, 리그1 등 경기 시간 확인
+- 🌍 **해외 업무**: 글로벌 팀과의 미팅 시간 조율
+
+## 📄 라이선스
+
+MIT License
+

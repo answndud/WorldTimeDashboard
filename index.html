@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Time - 세계 시간</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Dark Theme (Default) */
+        :root, [data-theme="dark"] {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --accent-gold: #d4af37;
+            --accent-copper: #b87333;
+            --accent-teal: #20b2aa;
+            --text-primary: #e8e8e8;
+            --text-secondary: #8a8a9a;
+            --text-muted: #5a5a6a;
+            --border-color: #2a2a3a;
+            --gradient-gold: linear-gradient(135deg, #d4af37 0%, #b87333 100%);
+            --shadow-card: 0 10px 40px rgba(212, 175, 55, 0.1);
+            --toggle-bg: #2a2a3a;
+            --toggle-icon: '🌙';
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --bg-primary: #FCFCFC;
+            --bg-secondary: #eaeae5;
+            --bg-card: #ffffff;
+            --accent-gold: #b8860b;
+            --accent-copper: #8b5a2b;
+            --accent-teal: #008b8b;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a5a;
+            --text-muted: #7a7a8a;
+            --border-color: #d0d0d8;
+            --gradient-gold: linear-gradient(135deg, #b8860b 0%, #8b5a2b 100%);
+            --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --toggle-bg: #e0e0d8;
+            --toggle-icon: '☀️';
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(32, 178, 170, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(184, 115, 51, 0.02) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="light"] body::before {
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(184, 134, 11, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 139, 139, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(139, 90, 43, 0.03) 0%, transparent 70%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-gold);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle-icon {
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle-text {
+            font-weight: 500;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px 0;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 2px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.1s forwards;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.2s forwards;
+        }
+
+        /* Korea Time Display */
+        .korea-time-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px 40px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.3s forwards;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .korea-time-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-gold);
+        }
+
+        .korea-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .korea-flag {
+            font-size: 2.5rem;
+        }
+
+        .korea-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .korea-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--accent-gold);
+        }
+
+        .korea-date {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Grid Layout */
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* Time Card */
+        .time-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .time-card:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .time-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-gold);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .time-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .city-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .city-flag {
+            font-size: 1.8rem;
+        }
+
+        .city-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .city-country {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .time-diff {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .time-diff.behind {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        [data-theme="light"] .time-diff.behind {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+        }
+
+        .time-diff.ahead {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+        }
+
+        [data-theme="light"] .time-diff.ahead {
+            background: rgba(22, 163, 74, 0.1);
+            color: #16a34a;
+        }
+
+        .time-diff.same {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--accent-gold);
+        }
+
+        .current-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .current-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .day-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 15px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .day-status.day {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        [data-theme="light"] .day-status.day {
+            background: rgba(245, 158, 11, 0.15);
+            color: #d97706;
+        }
+
+        .day-status.night {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+        }
+
+        [data-theme="light"] .day-status.night {
+            background: rgba(79, 70, 229, 0.12);
+            color: #4f46e5;
+        }
+
+        .day-status.dawn {
+            background: rgba(244, 114, 182, 0.15);
+            color: #f472b6;
+        }
+
+        [data-theme="light"] .day-status.dawn {
+            background: rgba(236, 72, 153, 0.12);
+            color: #db2777;
+        }
+
+        .day-status.dusk {
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+        }
+
+        [data-theme="light"] .day-status.dusk {
+            background: rgba(234, 88, 12, 0.12);
+            color: #ea580c;
+        }
+
+        /* Category Labels */
+        .category-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 40px 0 20px;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .category-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Market Status */
+        .market-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .market-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .market-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .market-status.open {
+            color: #4ade80;
+        }
+
+        [data-theme="light"] .market-status.open {
+            color: #16a34a;
+        }
+
+        .market-status.closed {
+            color: #f87171;
+        }
+
+        [data-theme="light"] .market-status.closed {
+            color: #dc2626;
+        }
+
+        .market-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .market-status.open::before {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 8px 15px;
+            }
+
+            .theme-toggle-text {
+                display: none;
+            }
+
+            .korea-time-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 25px;
+            }
+
+            .korea-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .korea-time {
+                font-size: 2rem;
+            }
+
+            .time-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .current-time {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="테마 변경">
+        <span class="theme-toggle-icon" id="theme-icon">🌙</span>
+        <span class="theme-toggle-text" id="theme-text">다크 모드</span>
+    </button>
+
+    <div class="container">
+        <header>
+            <!-- <div class="logo">◈ Global Time Dashboard ◈</div> -->
+            <h1>WORLD TIME</h1>
+            <p class="subtitle">한국 기준 세계 주요 도시 시간 · 서머타임(DST) 자동 적용 ☀️</p>
+        </header>
+
+        <!-- Korea Reference Time -->
+        <section class="korea-time-section">
+            <div class="korea-info">
+                <span class="korea-flag">🇰🇷</span>
+                <div>
+                    <div class="korea-label">대한민국 (KST)</div>
+                    <div class="korea-time" id="korea-time">--:--:--</div>
+                </div>
+            </div>
+            <div class="korea-date" id="korea-date">----년 --월 --일 (--)</div>
+        </section>
+
+        <!-- Americas -->
+        <div class="category-label" style="animation-delay: 0.4s;">🌎 미주 · Americas</div>
+        <div class="time-grid" id="americas-grid"></div>
+
+        <!-- Europe -->
+        <div class="category-label" style="animation-delay: 0.5s;">🇪🇺 유럽 · Europe</div>
+        <div class="time-grid" id="europe-grid"></div>
+
+        <!-- Asia & Middle East -->
+        <div class="category-label" style="animation-delay: 0.6s;">🌏 아시아 & 중동 · Asia & Middle East</div>
+        <div class="time-grid" id="asia-grid"></div>
+
+        <!-- Oceania -->
+        <div class="category-label" style="animation-delay: 0.7s;">🌊 오세아니아 · Oceania</div>
+        <div class="time-grid" id="oceania-grid"></div>
+
+        <footer>
+            <!-- <p>실시간 자동 업데이트 · <a href="https://github.com" target="_blank">GitHub Pages</a>에서 호스팅</p> -->
+        </footer>
+    </div>
+
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to dark
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeUI(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeUI(newTheme);
+        });
+
+        function updateThemeUI(theme) {
+            if (theme === 'dark') {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = '다크 모드';
+            } else {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = '라이트 모드';
+            }
+        }
+
+        const cities = {
+            americas: [
+                {
+                    name: '뉴욕',
+                    nameEn: 'New York',
+                    country: '미국 동부',
+                    flag: '🇺🇸',
+                    timezone: 'America/New_York',
+                    market: 'NYSE/NASDAQ',
+                    marketHours: { open: 9.5, close: 16 },
+                    hasDST: true
+                },
+                {
+                    name: '로스앤젤레스',
+                    nameEn: 'Los Angeles',
+                    country: '미국 서부',
+                    flag: '🇺🇸',
+                    timezone: 'America/Los_Angeles',
+                    market: null,
+                    hasDST: true
+                },
+                {
+                    name: '댈러스',
+                    nameEn: 'Dallas (Texas)',
+                    country: '미국 중부',
+                    flag: '🇺🇸',
+                    timezone: 'America/Chicago',
+                    market: null,
+                    hasDST: true
+                },
+                {
+                    name: '토론토',
+                    nameEn: 'Toronto',
+                    country: '캐나다',
+                    flag: '🇨🇦',
+                    timezone: 'America/Toronto',
+                    market: 'TSX',
+                    marketHours: { open: 9.5, close: 16 },
+                    hasDST: true
+                },
+                {
+                    name: '상파울루',
+                    nameEn: 'São Paulo',
+                    country: '브라질',
+                    flag: '🇧🇷',
+                    timezone: 'America/Sao_Paulo',
+                    market: 'B3',
+                    marketHours: { open: 10, close: 17 },
+                    hasDST: false
+                }
+            ],
+            europe: [
+                {
+                    name: '런던',
+                    nameEn: 'London',
+                    country: '영국',
+                    flag: '🇬🇧',
+                    timezone: 'Europe/London',
+                    market: 'LSE',
+                    marketHours: { open: 8, close: 16.5 },
+                    sports: '프리미어리그',
+                    hasDST: true
+                },
+                {
+                    name: '파리',
+                    nameEn: 'Paris',
+                    country: '프랑스',
+                    flag: '🇫🇷',
+                    timezone: 'Europe/Paris',
+                    market: 'Euronext Paris',
+                    marketHours: { open: 9, close: 17.5 },
+                    sports: '리그1',
+                    hasDST: true
+                },
+                {
+                    name: '프랑크푸르트',
+                    nameEn: 'Frankfurt',
+                    country: '독일',
+                    flag: '🇩🇪',
+                    timezone: 'Europe/Berlin',
+                    market: 'Xetra/DAX',
+                    marketHours: { open: 9, close: 17.5 },
+                    sports: '분데스리가',
+                    hasDST: true
+                },
+                {
+                    name: '마드리드',
+                    nameEn: 'Madrid',
+                    country: '스페인',
+                    flag: '🇪🇸',
+                    timezone: 'Europe/Madrid',
+                    market: 'BME',
+                    marketHours: { open: 9, close: 17.5 },
+                    sports: '라리가',
+                    hasDST: true
+                },
+                {
+                    name: '밀라노',
+                    nameEn: 'Milan',
+                    country: '이탈리아',
+                    flag: '🇮🇹',
+                    timezone: 'Europe/Rome',
+                    market: 'Borsa Italiana',
+                    marketHours: { open: 9, close: 17.5 },
+                    sports: '세리에A',
+                    hasDST: true
+                }
+            ],
+            asia: [
+                {
+                    name: '도쿄',
+                    nameEn: 'Tokyo',
+                    country: '일본',
+                    flag: '🇯🇵',
+                    timezone: 'Asia/Tokyo',
+                    market: 'TSE',
+                    marketHours: { open: 9, close: 15 },
+                    hasDST: false
+                },
+                {
+                    name: '베이징',
+                    nameEn: 'Beijing',
+                    country: '중국',
+                    flag: '🇨🇳',
+                    timezone: 'Asia/Shanghai',
+                    market: 'SSE',
+                    marketHours: { open: 9.5, close: 15 },
+                    hasDST: false
+                },
+                {
+                    name: '홍콩',
+                    nameEn: 'Hong Kong',
+                    country: '홍콩',
+                    flag: '🇭🇰',
+                    timezone: 'Asia/Hong_Kong',
+                    market: 'HKEX',
+                    marketHours: { open: 9.5, close: 16 },
+                    hasDST: false
+                },
+                {
+                    name: '싱가포르',
+                    nameEn: 'Singapore',
+                    country: '싱가포르',
+                    flag: '🇸🇬',
+                    timezone: 'Asia/Singapore',
+                    market: 'SGX',
+                    marketHours: { open: 9, close: 17 },
+                    hasDST: false
+                },
+                {
+                    name: '뭄바이',
+                    nameEn: 'Mumbai',
+                    country: '인도',
+                    flag: '🇮🇳',
+                    timezone: 'Asia/Kolkata',
+                    market: 'BSE/NSE',
+                    marketHours: { open: 9.25, close: 15.5 },
+                    hasDST: false
+                },
+                {
+                    name: '두바이',
+                    nameEn: 'Dubai',
+                    country: 'UAE',
+                    flag: '🇦🇪',
+                    timezone: 'Asia/Dubai',
+                    market: 'DFM',
+                    marketHours: { open: 10, close: 14 },
+                    hasDST: false
+                }
+            ],
+            oceania: [
+                {
+                    name: '시드니',
+                    nameEn: 'Sydney',
+                    country: '호주',
+                    flag: '🇦🇺',
+                    timezone: 'Australia/Sydney',
+                    market: 'ASX',
+                    marketHours: { open: 10, close: 16 },
+                    hasDST: true
+                },
+                {
+                    name: '오클랜드',
+                    nameEn: 'Auckland',
+                    country: '뉴질랜드',
+                    flag: '🇳🇿',
+                    timezone: 'Pacific/Auckland',
+                    market: 'NZX',
+                    marketHours: { open: 10, close: 16.45 },
+                    hasDST: true
+                }
+            ]
+        };
+        
+        // Calculate timezone offset from Seoul (KST) dynamically - handles DST automatically
+        function getTimezoneOffset(timezone) {
+            const now = new Date();
+            
+            // Get time in Seoul
+            const seoulTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+            // Get time in target timezone
+            const targetTime = new Date(now.toLocaleString('en-US', { timeZone: timezone }));
+            
+            // Calculate difference in hours
+            const diffMs = targetTime - seoulTime;
+            const diffHours = diffMs / (1000 * 60 * 60);
+            
+            // Round to nearest 0.5 for half-hour timezones (like India)
+            return Math.round(diffHours * 2) / 2;
+        }
+        
+        // Check if a timezone is currently in DST
+        function isDST(timezone) {
+            const now = new Date();
+            const jan = new Date(now.getFullYear(), 0, 1);
+            const jul = new Date(now.getFullYear(), 6, 1);
+            
+            const janOffset = new Date(jan.toLocaleString('en-US', { timeZone: timezone })) - jan;
+            const julOffset = new Date(jul.toLocaleString('en-US', { timeZone: timezone })) - jul;
+            const nowOffset = new Date(now.toLocaleString('en-US', { timeZone: timezone })) - now;
+            
+            // If current offset is not the same as Jan offset, and we're in Northern Hemisphere DST pattern
+            // Or if current offset is not the same as Jul offset for Southern Hemisphere
+            const standardOffset = Math.min(janOffset, julOffset);
+            return nowOffset !== standardOffset;
+        }
+
+        const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+
+        function formatTime(date) {
+            return date.toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const dayName = dayNames[date.getDay()];
+            return `${year}년 ${month}월 ${day}일 (${dayName})`;
+        }
+
+        function formatShortDate(date) {
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const dayName = dayNames[date.getDay()];
+            return `${month}/${day} (${dayName})`;
+        }
+
+        function getTimeInTimezone(timezone) {
+            return new Date(new Date().toLocaleString('en-US', { timeZone: timezone }));
+        }
+
+        function getDayStatus(hour) {
+            if (hour >= 6 && hour < 8) return { status: 'dawn', text: '🌅 새벽' };
+            if (hour >= 8 && hour < 18) return { status: 'day', text: '☀️ 낮' };
+            if (hour >= 18 && hour < 20) return { status: 'dusk', text: '🌇 저녁' };
+            return { status: 'night', text: '🌙 밤' };
+        }
+
+        function getTimeDiffText(offset, hasDST, timezone) {
+            const isDSTActive = hasDST && isDST(timezone);
+            let dstIndicator = isDSTActive ? ' ☀️' : '';
+            
+            if (offset === 0) {
+                return { text: '동일' + dstIndicator, class: 'same', isDST: isDSTActive };
+            } else if (offset > 0) {
+                const hours = Math.floor(offset);
+                const minutes = Math.round((offset % 1) * 60);
+                if (minutes > 0) {
+                    return { text: `+${hours}시간 ${minutes}분` + dstIndicator, class: 'ahead', isDST: isDSTActive };
+                }
+                return { text: `+${offset}시간` + dstIndicator, class: 'ahead', isDST: isDSTActive };
+            } else {
+                const hours = Math.floor(Math.abs(offset));
+                const minutes = Math.round((Math.abs(offset) % 1) * 60);
+                if (minutes > 0) {
+                    return { text: `-${hours}시간 ${minutes}분` + dstIndicator, class: 'behind', isDST: isDSTActive };
+                }
+                return { text: `${offset}시간` + dstIndicator, class: 'behind', isDST: isDSTActive };
+            }
+        }
+
+        function createCityCard(city, index) {
+            const card = document.createElement('div');
+            card.className = 'time-card';
+            card.style.animationDelay = `${0.4 + index * 0.05}s`;
+            card.dataset.timezone = city.timezone;
+            card.dataset.hasDst = city.hasDST ? 'true' : 'false';
+            card.dataset.market = city.market || '';
+            card.dataset.marketOpen = city.marketHours?.open || '';
+            card.dataset.marketClose = city.marketHours?.close || '';
+            
+            // Calculate offset dynamically (handles DST)
+            const offset = getTimezoneOffset(city.timezone);
+            const timeDiff = getTimeDiffText(offset, city.hasDST, city.timezone);
+            
+            let marketHtml = '';
+            if (city.market) {
+                marketHtml = `
+                    <div class="market-info">
+                        <div class="market-label">${city.market}${city.sports ? ' · ' + city.sports : ''}</div>
+                        <div class="market-status" data-market-status>--</div>
+                    </div>
+                `;
+            } else if (city.sports) {
+                marketHtml = `
+                    <div class="market-info">
+                        <div class="market-label">${city.sports}</div>
+                    </div>
+                `;
+            }
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="city-info">
+                        <span class="city-flag">${city.flag}</span>
+                        <div>
+                            <div class="city-name">${city.name}</div>
+                            <div class="city-country">${city.nameEn} · ${city.country}</div>
+                        </div>
+                    </div>
+                    <span class="time-diff ${timeDiff.class}" data-time-diff>${timeDiff.text}</span>
+                </div>
+                <div class="current-time" data-time>--:--:--</div>
+                <div class="current-date" data-date>--/-- (--)</div>
+                <div class="day-status" data-day-status>--</div>
+                ${marketHtml}
+            `;
+            
+            return card;
+        }
+
+        function initializeCards() {
+            const americasGrid = document.getElementById('americas-grid');
+            const europeGrid = document.getElementById('europe-grid');
+            const asiaGrid = document.getElementById('asia-grid');
+            const oceaniaGrid = document.getElementById('oceania-grid');
+            
+            let index = 0;
+            
+            cities.americas.forEach((city) => {
+                americasGrid.appendChild(createCityCard(city, index++));
+            });
+            
+            cities.europe.forEach((city) => {
+                europeGrid.appendChild(createCityCard(city, index++));
+            });
+            
+            cities.asia.forEach((city) => {
+                asiaGrid.appendChild(createCityCard(city, index++));
+            });
+            
+            cities.oceania.forEach((city) => {
+                oceaniaGrid.appendChild(createCityCard(city, index++));
+            });
+        }
+
+        function updateAllTimes() {
+            // Update Korea time
+            const koreaTime = getTimeInTimezone('Asia/Seoul');
+            document.getElementById('korea-time').textContent = formatTime(koreaTime);
+            document.getElementById('korea-date').textContent = formatDate(koreaTime);
+            
+            // Update all city cards
+            document.querySelectorAll('.time-card').forEach(card => {
+                const timezone = card.dataset.timezone;
+                const hasDST = card.dataset.hasDst === 'true';
+                const localTime = getTimeInTimezone(timezone);
+                
+                card.querySelector('[data-time]').textContent = formatTime(localTime);
+                card.querySelector('[data-date]').textContent = formatShortDate(localTime);
+                
+                const hour = localTime.getHours();
+                const dayStatus = getDayStatus(hour);
+                const dayStatusEl = card.querySelector('[data-day-status]');
+                dayStatusEl.textContent = dayStatus.text;
+                dayStatusEl.className = `day-status ${dayStatus.status}`;
+                
+                // Update time difference (handles DST changes dynamically)
+                const timeDiffEl = card.querySelector('[data-time-diff]');
+                if (timeDiffEl) {
+                    const offset = getTimezoneOffset(timezone);
+                    const timeDiff = getTimeDiffText(offset, hasDST, timezone);
+                    timeDiffEl.textContent = timeDiff.text;
+                    timeDiffEl.className = `time-diff ${timeDiff.class}`;
+                }
+                
+                // Update market status if applicable
+                const marketStatusEl = card.querySelector('[data-market-status]');
+                if (marketStatusEl && card.dataset.market) {
+                    const marketOpen = parseFloat(card.dataset.marketOpen);
+                    const marketClose = parseFloat(card.dataset.marketClose);
+                    const day = localTime.getDay();
+                    const currentHour = localTime.getHours() + localTime.getMinutes() / 60;
+                    
+                    let marketStatus;
+                    if (day === 0 || day === 6) {
+                        marketStatus = { open: false, text: '휴장 (주말)' };
+                    } else if (currentHour >= marketOpen && currentHour < marketClose) {
+                        marketStatus = { open: true, text: '개장 중' };
+                    } else {
+                        marketStatus = { open: false, text: '폐장' };
+                    }
+                    
+                    marketStatusEl.textContent = marketStatus.text;
+                    marketStatusEl.className = `market-status ${marketStatus.open ? 'open' : 'closed'}`;
+                }
+            });
+        }
+
+        // Initialize
+        initializeCards();
+        updateAllTimes();
+        
+        // Update every second
+        setInterval(updateAllTimes, 1000);
+    </script>
+</body>
+</html>
