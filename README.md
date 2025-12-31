@@ -40,44 +40,13 @@
 - **시드니** (AEST, KST +2시간) - ASX
 - **오클랜드** (NZST, KST +4시간) - NZX
 
-## 🚀 GitHub Pages 배포 방법
 
-### 방법 1: GitHub UI 사용
+### Github Pages접속 URL
 
-1. GitHub에 새 저장소 생성 (예: `world-time`)
-2. 이 폴더의 파일들을 저장소에 업로드
-3. **Settings** → **Pages** 이동
-4. Source를 **Deploy from a branch** 선택
-5. Branch를 **main** (또는 master), 폴더를 **/ (root)** 선택
-6. Save 클릭
-
-### 방법 2: Git 명령어 사용
-
-```bash
-# 저장소 초기화
-git init
-git add .
-git commit -m "Initial commit: World Time Dashboard"
-
-# GitHub 저장소 연결 (username을 본인 계정으로 변경)
-git remote add origin https://github.com/USERNAME/world-time.git
-git branch -M main
-git push -u origin main
-```
-
-그 후 GitHub Settings에서 Pages 활성화
-
-### 접속 URL
-
-배포 완료 후: `https://USERNAME.github.io/world-time/`
+배포 완료 후: 'https://answndud.github.io/WorldTimeDashboard/'
 
 ## 📁 파일 구조
 
-```
-World-Time/
-├── index.html    # 메인 페이지 (HTML + CSS + JavaScript 통합)
-└── README.md     # 이 파일
-```
 
 ## 🎨 특징
 
@@ -95,4 +64,3 @@ World-Time/
 ## 📄 라이선스
 
 MIT License
-
