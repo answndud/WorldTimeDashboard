@@ -497,17 +497,33 @@
             <div class="korea-date" id="korea-date">----년 --월 --일 (--)</div>
         </section>
 
-        <!-- Americas -->
-        <div class="category-label">미주 · Americas</div>
-        <div class="time-grid" id="americas-grid"></div>
+        <!-- North America -->
+        <div class="category-label">북미 · North America</div>
+        <div class="time-grid" id="north-america-grid"></div>
+
+        <!-- South America -->
+        <div class="category-label">남미 · South America</div>
+        <div class="time-grid" id="south-america-grid"></div>
 
         <!-- Europe -->
         <div class="category-label">유럽 · Europe</div>
         <div class="time-grid" id="europe-grid"></div>
 
-        <!-- Asia & Middle East -->
-        <div class="category-label">아시아 & 중동 · Asia & Middle East</div>
-        <div class="time-grid" id="asia-grid"></div>
+        <!-- East Asia -->
+        <div class="category-label">동아시아 · East Asia</div>
+        <div class="time-grid" id="east-asia-grid"></div>
+
+        <!-- Southeast Asia -->
+        <div class="category-label">동남아 · Southeast Asia</div>
+        <div class="time-grid" id="southeast-asia-grid"></div>
+
+        <!-- West Asia -->
+        <div class="category-label">서아시아 · West Asia</div>
+        <div class="time-grid" id="west-asia-grid"></div>
+
+        <!-- Africa -->
+        <div class="category-label">아프리카 · Africa</div>
+        <div class="time-grid" id="africa-grid"></div>
 
         <!-- Oceania -->
         <div class="category-label">오세아니아 · Oceania</div>
@@ -549,7 +565,7 @@
         }
 
         const cities = {
-            americas: [
+            northAmerica: [
                 {
                     name: '뉴욕',
                     nameEn: 'New York',
@@ -585,12 +601,83 @@
                     hasDST: true
                 },
                 {
+                    name: '시카고',
+                    nameEn: 'Chicago',
+                    country: '미국 중부',
+                    timezone: 'America/Chicago',
+                    market: null,
+                    hasDST: true
+                },
+                {
+                    name: '마이애미',
+                    nameEn: 'Miami',
+                    country: '미국 동부',
+                    timezone: 'America/New_York',
+                    market: null,
+                    hasDST: true
+                },
+                {
+                    name: '멕시코시티',
+                    nameEn: 'Mexico City',
+                    country: '멕시코',
+                    timezone: 'America/Mexico_City',
+                    market: 'BMV',
+                    marketHours: { open: 8.3, close: 15 },
+                    hasDST: false
+                },
+                {
+                    name: '밴쿠버',
+                    nameEn: 'Vancouver',
+                    country: '캐나다',
+                    timezone: 'America/Vancouver',
+                    market: null,
+                    hasDST: true
+                }
+            ],
+            southAmerica: [
+                {
                     name: '상파울루',
                     nameEn: 'São Paulo',
                     country: '브라질',
                     timezone: 'America/Sao_Paulo',
                     market: 'B3',
                     marketHours: { open: 10, close: 17 },
+                    hasDST: false
+                },
+                {
+                    name: '부에노스아이레스',
+                    nameEn: 'Buenos Aires',
+                    country: '아르헨티나',
+                    timezone: 'America/Argentina/Buenos_Aires',
+                    market: 'BCBA',
+                    marketHours: { open: 11, close: 17 },
+                    hasDST: false
+                },
+                {
+                    name: '산티아고',
+                    nameEn: 'Santiago',
+                    country: '칠레',
+                    timezone: 'America/Santiago',
+                    market: 'BCS',
+                    marketHours: { open: 9.5, close: 17 },
+                    hasDST: true
+                },
+                {
+                    name: '보고타',
+                    nameEn: 'Bogota',
+                    country: '콜롬비아',
+                    timezone: 'America/Bogota',
+                    market: 'BVC',
+                    marketHours: { open: 9, close: 15 },
+                    hasDST: false
+                },
+                {
+                    name: '리마',
+                    nameEn: 'Lima',
+                    country: '페루',
+                    timezone: 'America/Lima',
+                    market: 'BVL',
+                    marketHours: { open: 9, close: 15 },
                     hasDST: false
                 }
             ],
@@ -644,9 +731,27 @@
                     marketHours: { open: 9, close: 17.5 },
                     sports: '세리에A',
                     hasDST: true
+                },
+                {
+                    name: '취리히',
+                    nameEn: 'Zurich',
+                    country: '스위스',
+                    timezone: 'Europe/Zurich',
+                    market: 'SIX',
+                    marketHours: { open: 9, close: 17.3 },
+                    hasDST: true
+                },
+                {
+                    name: '암스테르담',
+                    nameEn: 'Amsterdam',
+                    country: '네덜란드',
+                    timezone: 'Europe/Amsterdam',
+                    market: 'Euronext',
+                    marketHours: { open: 9, close: 17.5 },
+                    hasDST: true
                 }
             ],
-            asia: [
+            eastAsia: [
                 {
                     name: '도쿄',
                     nameEn: 'Tokyo',
@@ -675,6 +780,26 @@
                     hasDST: false
                 },
                 {
+                    name: '서울',
+                    nameEn: 'Seoul',
+                    country: '대한민국',
+                    timezone: 'Asia/Seoul',
+                    market: 'KRX',
+                    marketHours: { open: 9, close: 15.3 },
+                    hasDST: false
+                },
+                {
+                    name: '타이베이',
+                    nameEn: 'Taipei',
+                    country: '대만',
+                    timezone: 'Asia/Taipei',
+                    market: 'TWSE',
+                    marketHours: { open: 9, close: 13.3 },
+                    hasDST: false
+                }
+            ],
+            southeastAsia: [
+                {
                     name: '싱가포르',
                     nameEn: 'Singapore',
                     country: '싱가포르',
@@ -691,7 +816,9 @@
                     market: 'BSE/NSE',
                     marketHours: { open: 9.25, close: 15.5 },
                     hasDST: false
-                },
+                }
+            ],
+            westAsia: [
                 {
                     name: '두바이',
                     nameEn: 'Dubai',
@@ -699,6 +826,88 @@
                     timezone: 'Asia/Dubai',
                     market: 'DFM',
                     marketHours: { open: 10, close: 14 },
+                    hasDST: false
+                },
+                {
+                    name: '리야드',
+                    nameEn: 'Riyadh',
+                    country: '사우디아라비아',
+                    timezone: 'Asia/Riyadh',
+                    market: 'Tadawul',
+                    marketHours: { open: 10, close: 15 },
+                    hasDST: false
+                },
+                {
+                    name: '이스탄불',
+                    nameEn: 'Istanbul',
+                    country: '튀르키예',
+                    timezone: 'Europe/Istanbul',
+                    market: 'BIST',
+                    marketHours: { open: 10, close: 18 },
+                    hasDST: false
+                }
+            ],
+            africa: [
+                {
+                    name: '카이로',
+                    nameEn: 'Cairo',
+                    country: '이집트',
+                    timezone: 'Africa/Cairo',
+                    market: 'EGX',
+                    marketHours: { open: 10, close: 15.5 },
+                    hasDST: true
+                },
+                {
+                    name: '나이로비',
+                    nameEn: 'Nairobi',
+                    country: '케냐',
+                    timezone: 'Africa/Nairobi',
+                    market: 'NSE Kenya',
+                    marketHours: { open: 9, close: 15 },
+                    hasDST: false
+                },
+                {
+                    name: '라고스',
+                    nameEn: 'Lagos',
+                    country: '나이지리아',
+                    timezone: 'Africa/Lagos',
+                    market: 'NGX',
+                    marketHours: { open: 10, close: 14.5 },
+                    hasDST: false
+                },
+                {
+                    name: '요하네스버그',
+                    nameEn: 'Johannesburg',
+                    country: '남아프리카공화국',
+                    timezone: 'Africa/Johannesburg',
+                    market: 'JSE',
+                    marketHours: { open: 9, close: 17 },
+                    hasDST: false
+                },
+                {
+                    name: '카사블랑카',
+                    nameEn: 'Casablanca',
+                    country: '모로코',
+                    timezone: 'Africa/Casablanca',
+                    market: 'CSE',
+                    marketHours: { open: 9.5, close: 15 },
+                    hasDST: true
+                },
+                {
+                    name: '아크라',
+                    nameEn: 'Accra',
+                    country: '가나',
+                    timezone: 'Africa/Accra',
+                    market: 'GSE',
+                    marketHours: { open: 9.5, close: 15 },
+                    hasDST: false
+                },
+                {
+                    name: '아디스아바바',
+                    nameEn: 'Addis Ababa',
+                    country: '에티오피아',
+                    timezone: 'Africa/Addis_Ababa',
+                    market: null,
                     hasDST: false
                 }
             ],
@@ -720,6 +929,22 @@
                     market: 'NZX',
                     marketHours: { open: 10, close: 16.45 },
                     hasDST: true
+                },
+                {
+                    name: '멜버른',
+                    nameEn: 'Melbourne',
+                    country: '호주',
+                    timezone: 'Australia/Melbourne',
+                    market: null,
+                    hasDST: true
+                },
+                {
+                    name: '브리즈번',
+                    nameEn: 'Brisbane',
+                    country: '호주',
+                    timezone: 'Australia/Brisbane',
+                    market: null,
+                    hasDST: false
                 }
             ]
         };
@@ -864,25 +1089,45 @@
         }
 
         function initializeCards() {
-            const americasGrid = document.getElementById('americas-grid');
+            const northAmericaGrid = document.getElementById('north-america-grid');
+            const southAmericaGrid = document.getElementById('south-america-grid');
             const europeGrid = document.getElementById('europe-grid');
-            const asiaGrid = document.getElementById('asia-grid');
+            const eastAsiaGrid = document.getElementById('east-asia-grid');
+            const southeastAsiaGrid = document.getElementById('southeast-asia-grid');
+            const westAsiaGrid = document.getElementById('west-asia-grid');
+            const africaGrid = document.getElementById('africa-grid');
             const oceaniaGrid = document.getElementById('oceania-grid');
             
             let index = 0;
             
-            cities.americas.forEach((city) => {
-                americasGrid.appendChild(createCityCard(city, index++));
+            cities.northAmerica.forEach((city) => {
+                northAmericaGrid.appendChild(createCityCard(city, index++));
             });
-            
+
+            cities.southAmerica.forEach((city) => {
+                southAmericaGrid.appendChild(createCityCard(city, index++));
+            });
+
             cities.europe.forEach((city) => {
                 europeGrid.appendChild(createCityCard(city, index++));
             });
-            
-            cities.asia.forEach((city) => {
-                asiaGrid.appendChild(createCityCard(city, index++));
+
+            cities.eastAsia.forEach((city) => {
+                eastAsiaGrid.appendChild(createCityCard(city, index++));
             });
-            
+
+            cities.southeastAsia.forEach((city) => {
+                southeastAsiaGrid.appendChild(createCityCard(city, index++));
+            });
+
+            cities.westAsia.forEach((city) => {
+                westAsiaGrid.appendChild(createCityCard(city, index++));
+            });
+
+            cities.africa.forEach((city) => {
+                africaGrid.appendChild(createCityCard(city, index++));
+            });
+
             cities.oceania.forEach((city) => {
                 oceaniaGrid.appendChild(createCityCard(city, index++));
             });
