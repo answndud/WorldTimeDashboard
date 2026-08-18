@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-theme="light">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root, [data-theme="light"] {
+        :root {
             --bg-primary: #f6f7f8;
             --bg-secondary: #eceef0;
             --bg-card: rgba(255, 255, 255, 0.9);
@@ -24,24 +24,6 @@
             --success: #1e6f46;
             --day: #6f7478;
             --night: #6f7478;
-        }
-
-        [data-theme="dark"] {
-            --bg-primary: #0f1214;
-            --bg-secondary: #161a1d;
-            --bg-card: rgba(22, 26, 29, 0.92);
-            --accent: #f2f4f4;
-            --accent-soft: #21262a;
-            --text-primary: #f2f4f4;
-            --text-secondary: #b6bec2;
-            --text-muted: #869196;
-            --border-color: #2b3236;
-            --shadow-card: 0 1px 1px rgba(0, 0, 0, 0.28);
-            --shadow-raised: 0 6px 18px rgba(0, 0, 0, 0.22);
-            --danger: #ffb4ab;
-            --success: #8bd39a;
-            --day: #aab1b6;
-            --night: #aab1b6;
         }
 
         * {
@@ -65,41 +47,6 @@
             padding: 28px 18px;
             position: relative;
             z-index: 1;
-        }
-
-        /* Theme Toggle */
-        .theme-toggle {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            z-index: 1000;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 11px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            transition: border-color 0.2s ease, background 0.2s ease;
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-
-        .theme-toggle:hover {
-            border-color: var(--accent);
-        }
-
-        .theme-toggle-icon {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: var(--accent);
-        }
-
-        .theme-toggle-text {
-            font-weight: 500;
         }
 
         /* Header */
@@ -419,16 +366,6 @@
                 padding: 18px 14px;
             }
 
-            .theme-toggle {
-                top: 12px;
-                right: 12px;
-                padding: 8px;
-            }
-
-            .theme-toggle-text {
-                display: none;
-            }
-
             .korea-time-section {
                 flex-direction: column;
                 align-items: flex-start;
@@ -470,15 +407,111 @@
                 grid-template-columns: repeat(5, minmax(0, 1fr));
             }
         }
+
+        /* Shared sharp light interface */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --accent: #1769aa;
+            --accent-soft: #eef5fb;
+            --text-primary: #111516;
+            --text-secondary: #4b5659;
+            --text-muted: #778285;
+            --border-color: #c8d0d1;
+            --border-hover: #1769aa;
+            --shadow-card: none;
+            --shadow-raised: none;
+            --danger: #b42318;
+            --success: #1769aa;
+            --day: #1769aa;
+            --night: #4b5659;
+        }
+
+        html,
+        body,
+        body *,
+        body *::before,
+        body *::after {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        body {
+            background: #ffffff !important;
+        }
+
+        .container {
+            max-width: 1350px;
+        }
+
+        .korea-time-section,
+        .time-card {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: none !important;
+        }
+
+        .korea-time-section {
+            margin-bottom: 2rem;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .time-grid {
+            gap: 1rem;
+        }
+
+        .time-card {
+            min-width: 0;
+            padding: 1rem;
+            transition: border-color 0.2s ease, background 0.2s ease !important;
+        }
+
+        .time-card:hover {
+            border-color: var(--accent-primary, var(--accent)) !important;
+            background: var(--accent-soft) !important;
+        }
+
+        .time-diff,
+        .day-status {
+            border: 1px solid var(--border-color) !important;
+            background: transparent !important;
+            padding: 3px 6px;
+        }
+
+        .time-diff.same {
+            background: var(--accent-soft) !important;
+            color: var(--accent) !important;
+            border-color: var(--accent) !important;
+        }
+
+        .category-label {
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+
+        .category-label::after {
+            background: var(--border-color);
+        }
+
+        .market-info {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .market-status::before {
+            width: 6px;
+            height: 6px;
+            border-radius: 0 !important;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 18px 14px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle" id="theme-toggle" aria-label="테마 변경">
-        <span class="theme-toggle-icon" id="theme-icon" aria-hidden="true"></span>
-        <span class="theme-toggle-text" id="theme-text">다크 모드</span>
-    </button>
-
     <div class="container">
         <header>
             <div class="logo">GLOBAL TIME</div>
@@ -535,35 +568,6 @@
     </div>
 
     <script>
-        // Theme Toggle Logic
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const themeText = document.getElementById('theme-text');
-        const html = document.documentElement;
-        const themeStorageKey = 'world-time-theme';
-
-        // Check for saved theme preference or default to light
-        const savedTheme = localStorage.getItem(themeStorageKey) || 'light';
-        html.setAttribute('data-theme', savedTheme);
-        updateThemeUI(savedTheme);
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem(themeStorageKey, newTheme);
-            updateThemeUI(newTheme);
-        });
-
-        function updateThemeUI(theme) {
-            if (theme === 'dark') {
-                themeText.textContent = '다크 모드';
-            } else {
-                themeText.textContent = '라이트 모드';
-            }
-        }
-
         const cities = {
             northAmerica: [
                 {
