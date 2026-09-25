@@ -7,6 +7,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        (() => {
+            const savedTheme = localStorage.getItem('world-time-theme');
+            const theme = savedTheme === 'dark' || savedTheme === 'light'
+                ? savedTheme
+                : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.dataset.theme = theme;
+            document.documentElement.style.colorScheme = theme;
+        })();
+    </script>
     <style>
         :root {
             --bg-primary: #f6f7f8;
@@ -366,6 +376,10 @@
                 padding: 18px 14px;
             }
 
+            .theme-label {
+                display: none;
+            }
+
             .korea-time-section {
                 flex-direction: column;
                 align-items: flex-start;
@@ -410,6 +424,7 @@
 
         /* Shared sharp light interface */
         :root {
+            color-scheme: light;
             --bg-primary: #ffffff;
             --bg-secondary: #ffffff;
             --bg-card: #ffffff;
@@ -428,6 +443,27 @@
             --night: #4b5659;
         }
 
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #161b22;
+            --accent: #58a6ff;
+            --accent-primary: #58a6ff;
+            --accent-soft: #1f2a3a;
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --text-muted: #8b949e;
+            --border-color: #30363d;
+            --border-hover: #58a6ff;
+            --shadow-card: none;
+            --shadow-raised: none;
+            --danger: #f85149;
+            --success: #3fb950;
+            --day: #58a6ff;
+            --night: #8b949e;
+        }
+
         html,
         body,
         body *,
@@ -438,7 +474,7 @@
         }
 
         body {
-            background: #ffffff !important;
+            background: var(--bg-primary) !important;
         }
 
         .container {
@@ -470,6 +506,52 @@
         .time-card:hover {
             border-color: var(--accent-primary, var(--accent)) !important;
             background: var(--accent-soft) !important;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.72rem;
+            line-height: 1;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent) !important;
+            color: var(--accent);
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .theme-icon {
+            width: 1.15em;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .theme-label {
+            white-space: nowrap;
+        }
+
+        :root[data-theme="dark"] .time-card:hover {
+            border-color: var(--border-hover) !important;
         }
 
         .time-diff,
@@ -514,7 +596,13 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">GLOBAL TIME</div>
+            <div class="header-top">
+                <div class="logo">GLOBAL TIME</div>
+                <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" title="다크 모드로 전환">
+                    <span class="theme-icon" aria-hidden="true">☾</span>
+                    <span class="theme-label">다크 모드</span>
+                </button>
+            </div>
             <h1>WORLD TIME</h1>
             <p class="subtitle">한국 기준 세계 주요 도시 시간 · DST 자동 적용</p>
         </header>
@@ -568,6 +656,38 @@
     </div>
 
     <script>
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        const themeLabel = themeToggle.querySelector('.theme-label');
+        const systemThemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function applyTheme(theme, persist = true) {
+            const isDark = theme === 'dark';
+            html.dataset.theme = theme;
+            html.style.colorScheme = theme;
+            themeToggle.setAttribute('aria-pressed', String(isDark));
+            themeToggle.title = isDark ? '라이트 모드로 전환' : '다크 모드로 전환';
+            themeIcon.textContent = isDark ? '☀' : '☾';
+            themeLabel.textContent = isDark ? '라이트 모드' : '다크 모드';
+
+            if (persist) {
+                localStorage.setItem('world-time-theme', theme);
+            }
+        }
+
+        applyTheme(html.dataset.theme || (systemThemeQuery.matches ? 'dark' : 'light'), false);
+
+        themeToggle.addEventListener('click', () => {
+            applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+
+        systemThemeQuery.addEventListener?.('change', (event) => {
+            if (!localStorage.getItem('world-time-theme')) {
+                applyTheme(event.matches ? 'dark' : 'light', false);
+            }
+        });
+
         const cities = {
             northAmerica: [
                 {
