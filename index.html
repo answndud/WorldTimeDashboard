@@ -591,6 +591,78 @@
                 padding: 18px 14px;
             }
         }
+
+        /* Plain HTML-like surfaces and compact time cards in both themes. */
+        :root {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #eee;
+            --bg-card: white;
+            --accent: #444;
+            --accent-soft: #eee;
+            --text-primary: black;
+            --text-secondary: #333;
+            --text-muted: #555;
+            --border-color: #aaa;
+            --border-hover: #777;
+            --danger: #a00000;
+            --success: #286132;
+            --day: #333;
+            --night: #555;
+        }
+        :root[data-theme="dark"] {
+            --bg-primary: #151515;
+            --bg-secondary: #222;
+            --bg-card: #202020;
+            --accent: #ddd;
+            --accent-primary: #ddd;
+            --accent-soft: #303030;
+            --text-primary: #eee;
+            --text-secondary: #ddd;
+            --text-muted: #bbb;
+            --border-color: #777;
+            --border-hover: #bbb;
+            --danger: #ff9c95;
+            --success: #9bd8a5;
+            --day: #ddd;
+            --night: #bbb;
+        }
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+        .logo, h1 { font-family: inherit; }
+        .container { max-width: 1200px; padding: 20px 18px; }
+        header { margin-bottom: 14px; }
+        .logo { margin-bottom: 4px; }
+        h1 { font-size: 1.5rem; margin-bottom: 4px; }
+        .theme-toggle {
+            appearance: auto;
+            background: buttonface;
+            color: buttontext;
+            border: 2px outset buttonborder;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+        }
+        .theme-toggle:hover { color: buttontext; border-color: buttonborder !important; }
+        .theme-toggle:focus-visible { outline: auto; outline-offset: 2px; }
+        .korea-time-section { padding: 10px 12px; margin-bottom: 16px; gap: 10px; }
+        .korea-time { font-size: 1.65rem; }
+        .korea-date { font-size: 0.8rem; }
+        .time-grid { gap: 8px; }
+        .time-card { padding: 10px; }
+        .time-card:hover { border-color: #8aabc5 !important; background: #edf4f9 !important; }
+        :root[data-theme="dark"] .time-card:hover { border-color: #7191a9 !important; background: #293842 !important; }
+        .card-header { margin-bottom: 7px; gap: 8px; }
+        .current-time { font-size: 1.45rem; }
+        .day-status { margin-top: 6px; }
+        .category-label { margin: 18px 0 8px; }
+        .market-info { margin-top: 7px; padding-top: 6px; opacity: 1; }
+        footer { margin-top: 20px; padding: 16px; }
+        footer a { color: #0000ee; text-decoration: underline; }
+        :root[data-theme="dark"] footer a { color: #9bbcff; }
+        @media (max-width: 768px) {
+            .container { padding: 16px 12px; }
+            .korea-time-section { padding: 10px 12px; gap: 8px; }
+            .korea-time { font-size: 1.65rem; }
+            .current-time { font-size: 1.45rem; }
+        }
     </style>
 </head>
 <body>
